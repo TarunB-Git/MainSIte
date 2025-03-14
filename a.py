@@ -119,6 +119,76 @@ def login():
     login_user(user)
     return redirect(url_for('index'))
 
+@app.route("/temp")
+
+def temp():
+
+    celsius = request.args.get("celsius", "")
+
+    if celsius:
+
+        kelvin = kelvin_from(celsius)
+        fahrenheit = fahrenheit_from(celsius)
+    else:
+
+        kelvin = ""
+        fahrenheit = ""
+    return (
+
+        """<form action="" method="get">
+
+                Celsius temperature: <input type="text" name="celsius">
+
+                <input type="submit" value="Convert to Kelvin and Fahrenheit">
+
+            </form>"""
+
+        + "Celsius: "
+
+        + celsius
+
+        + "<br>Kelvin: "
+
+        + kelvin
+
+
+        + "<br>Fahrenheit: "
+
+        + fahrenheit
+
+
+    )
+
+def kelvin_from(celsius):
+
+    try:
+
+        kelvin = float(celsius) - 273.15
+
+        kelvin = round(kelvin, 1)
+
+        return str(kelvin)
+
+    except ValueError:
+
+        return "Invalid Input"
+
+
+def fahrenheit_from(celsius):
+
+    """Convert Celsius to Fahrenheit degrees."""
+
+    try:
+
+        fahrenheit = float(celsius) * 9 / 5 + 32
+
+        fahrenheit = round(fahrenheit, 3)  # Round to three decimal places
+
+        return str(fahrenheit)
+
+    except ValueError:
+
+        return "Invalid Input"
 
 @app.route("/logout/")
 @login_required

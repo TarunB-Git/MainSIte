@@ -1,0 +1,48 @@
+ create table accs(
+    -> id MEDIUMINT NOT NULL AUTO_INCREMENT,
+    -> acc_no MEDIUMINT NOT NULL,
+    -> name CHAR(30) NOT NULL,
+    -> dob date,
+    -> address CHAR(70) NOT NULL,
+    -> primary key(id),
+    -> unique(acc_no)
+    -> );
+
+insert into accs (acc_no, name, dob, address) values (1, "Harold llo", '2010-11-12', "Switzerland"), (2, "Ramesh", '2009-11-12', "India");
+
+PersonID int, FOREIGN KEY (PersonID) REFERENCES Accs(acc_no)
+
+create table transacs(
+     id MEDIUMINT NOT NULL AUTO_INCREMENT,
+     PersonID MEDIUMINT NOT NULL,
+     value int NOT NULL,
+     primary key(id),
+     FOREIGN KEY (PersonID) REFERENCES accs(acc_no)
+     );
+
+create table issues(
+     id MEDIUMINT NOT NULL AUTO_INCREMENT,
+     transaxid MEDIUMINT NOT NULL,
+     primary key(id),
+     FOREIGN KEY (transaxid) REFERENCES transacs(id)
+     );
+
+     alter table issues
+     add FOREIGN KEY (ruleid) REFERENCES rules(id);
+
+create table rules(
+     id MEDIUMINT NOT NULL AUTO_INCREMENT,
+     rule_desc CHAR(150) NOT NULL,
+     primary key(id)
+     );
+
+create table alphabets(
+     id MEDIUMINT NOT NULL AUTO_INCREMENT,
+     alphabet CHAR(10) NOT NULL,
+     primary key(id)
+     );
+
+ALTER TABLE alphabets
+ADD ordr varchar(255);
+insert into alphabets (alphabet, ordr) values ("c", "three"), ("t", 20);
+

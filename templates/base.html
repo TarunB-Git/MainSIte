@@ -18,11 +18,9 @@
 </head>
 
 <body class="custom-theme bg-dark">
-
-    <div class="custom-theme bg-dark">
           <nav class="navbar navbar-dark bg-dark" aria-label="First navbar example">
             <div class="container-fluid">
-              <a class="navbar-brand" href="/temp">Nilores</a>
+              <a class="navbar-brand" href="https://www.github.com/TarunB-Git" target="_blank" rel="noopener noreferrer">Nilores</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -110,6 +108,21 @@
     </div>
     </div>
     <script src="{{url_for('static', filename='switch.js')}}"></script>
-
+<script>
+!function(w, d, s, ...args){
+  var div = d.createElement('div');
+  div.id = 'aichatbot';
+  d.body.appendChild(div);
+  w.chatbotConfig = args;
+  var f = d.getElementsByTagName(s)[0],
+  j = d.createElement(s);
+  j.defer = true;
+  j.type = 'module';
+  j.src = 'https://aichatbot.sendbird.com/index.js';
+  f.parentNode.insertBefore(j, f);
+}(window, document, 'script', '34A99F2D-329B-4354-B26C-D01F19EA279C', 'onboarding_bot', {
+  apiHost: 'https://api-cf-ap-8.sendbird.com',
+});
+</script>
 </body>
 </html>

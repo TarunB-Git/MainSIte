@@ -1,0 +1,123 @@
+:root {
+  --black: #000000;
+  --almost-black: #080708;
+  --blue: #3772FF;
+  --blue-light: #3787ff;
+  --red: #DF2935;
+  --yellow: #FDCA40;
+  --light: #E6E8E6;
+  --white: #FFFFFF;
+}
+
+
+* {
+  position: relative;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  color: white;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--white);
+  background: var(--black);
+  background-image: linear-gradient(to bottom right, var(--almost-black), var(--black));
+  overflow-x: hidden;
+}
+
+
+.app {
+  height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+.images-section {
+  padding: 15px 0 0 15px;
+  width: 75%;
+  height: 100vh;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  display: flex;
+  overflow-x: hidden;
+}
+
+.images-section a {
+  margin: 0 15px 15px 0;
+  padding-bottom: 20%;
+  content: '';
+  width: calc(33.33% - 15px);
+  height: 0;
+  display: block;
+  overflow-x: hidden;
+}
+
+.images-section img {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+  display: block;
+  overflow-x: hidden;
+}
+
+
+
+input[type='submit'],
+button[type='button'] {
+  padding: 13px 20px;
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  background: var(--blue);
+  background-image: linear-gradient(to bottom, var(--blue-light), var(--blue));
+  transition: box-shadow .2s ease;
+}
+
+input[type='submit']:hover,
+button[type='button']:hover {
+  box-shadow: inset 0 -25px 25px var(--blue-light);
+}
+
+@media screen and (max-width: 658px) {
+
+  .app {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  .form-section {
+    padding-right: 0px;
+    padding-bottom: 15px;
+    width: 80%;
+  }
+
+  .images-section {
+    padding-top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+  }
+
+}
+
+@media screen (max-width: 658px) {
+
+  .images-section a {
+    padding-bottom: 60%;
+    width: calc(100% - 15px);
+    height: 100vh;
+    overflow-x: hidden;
+  }
+}
+

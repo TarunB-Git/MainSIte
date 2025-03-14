@@ -1,0 +1,105 @@
+#lightSwitch {
+  transform: scale(1.8);
+}
+
+.text-bg-light {
+    color: white !important;
+    background-color:white!important;
+}
+
+div.custom-theme.bg-dark {
+ background-color: rgba(0, 0, 0, 0.4);
+ color:white;
+ height:100%;
+}
+body {
+  display: flex;
+  height: 100vh;
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow-x: hidden;
+}
+
+main {
+  flex: 1 0 auto; /* allows the content to grow but not shrink */
+  overflow-x: hidden;
+}
+.post img {
+    background-color: transparent;
+}
+
+.flex-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: hidden;
+}
+
+.navbar {
+    position: relative;
+    background-color: dark;
+    transition: 0.2s;
+    height: 100%;
+    width:150px;
+}
+
+.navbar-expand .navbar-nav .nav-link{
+    padding-right: 2em;
+    padding-left: 2.5em;
+    position:static;
+}
+
+.nav-link{
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 500;
+    width: 100%;
+    line-height: 50px;
+}
+
+ .nav-link:focus,
+ .nav-link:hover{
+    color: cyan ! important;
+    background: #1e1e1e;
+    border-left: 3px solid cyan;
+    border-bottom:3px solid cyan;
+    text-align: left;
+}
+
+.navbar-nav .nav-link.inactive{
+    color: white;
+}
+
+.navbar-nav .nav-link.active{
+    color: cyan ! important;
+    background: #1e1e1e;
+    border-left: 3px solid cyan;
+    border-bottom: 3px solid cyan;
+    font-size:20px;
+}
+
+.container{
+    background-color: rgb(240, 240, 240)! important;
+    padding-bottom: 70px;
+    border-bottom: 70px;
+    transition:0.4s;
+    width:100%;
+    border-left:20px;
+    border-left:20px;
+}
+
+.me-2 {
+    display:block;
+}
+
+
+
+
+
+
+
+

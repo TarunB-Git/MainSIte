@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Booking Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            background-color: #fff;
+        }
+        #chat-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #chat-box {
+            height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .message {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .message.user {
+            justify-content: flex-end;
+        }
+        .message.assistant {
+            justify-content: flex-start;
+        }
+        .message-content {
+            border-radius: 20px;
+            padding: 10px 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .message.user .message-content {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .message.assistant .message-content {
+            background-color: #e5e5ea;
+            color: #333;
+        }
+        #user-input {
+            width: calc(100% - 110px);
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+        #send-button {
+            width: 100px;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+        #minimize-button {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        #minimize-button:hover {
+            background-color: #0056b3;
+        }
+        #chat-box.minimized {
+            height: 50px;
+            overflow: hidden;
+        }
+        #chat-box.minimized #send-button,
+        #chat-box.minimized #user-input {
+            display: none;
+        }
+        #date-time-input, #ages-input {
+            display: none;
+        }
+        #date-time-input input, #ages-input input {
+            width: calc(100% - 110px);
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-header">
+            Ticket Booking Chatbot
+            <button id="minimize-button"><i class="fas fa-minus"></i></button>
+        </div>
+        <div id="chat-box">
+            <!-- Messages will be appended here -->
+        </div>
+        <div id="date-time-input">
+            <input type="date" id="date-input">
+            <input type="time" id="time-input">
+        </div>
+        <div id="ages-input">
+            <input type="text" id="ages-list" placeholder="Enter ages separated by commas">
+        </div>
+        <div style="display: flex; align-items: center; padding: 10px;">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button"><i class="fas fa-paper-plane"></i> Send</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        const steps = [
+            'language', // Step 1
+            'group_size', // Step 2
+            'ages', // Step 3
+            'tour_guide', // Step 4
+            'nationalities', // Step 5
+            'date_timeslot', // Step 6
+            'contact_info' // Step 7
+        ];
+
+        async function sendToServer(step, data) {
+            try {
+                const response = await fetch(`/step/${step}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    appendMessage('Chatbot', result.message, 'assistant');
+
+                    if (step === 7) {
+                        // End of conversation
+                        document.getElementById('send-button').disabled = true;
+                    } else {
+                        currentStep++;
+                    }
+
+                    updateInputFields();
+                } else {
+                    const error = await response.json();
+                    appendMessage('Chatbot', error.message, 'assistant');
+                }
+            } catch (error) {
+                appendMessage('Chatbot', 'An error occurred, please try again.', 'assistant');
+            }
+        }
+
+        function updateInputFields() {
+            document.getElementById('ages-input').style.display = (currentStep === 3) ? 'block' : 'none';
+            document.getElementById('date-time-input').style.display = (currentStep === 6) ? 'block' : 'none';
+        }
+
+        document.getElementById('send-button').addEventListener('click', async () => {
+            const userInput = document.getElementById('user-input').value.trim();
+
+            if (currentStep === 6) {
+                const date = document.getElementById('date-input').value;
+                const time = document.getElementById('time-input').value;
+                if (!date || !time) return;
+                data = {
+                    date,
+                    timeslot: time
+                };
+            } else if (currentStep === 3) {
+                const ages = document.getElementById('ages-list').value.split(',').map(age => parseInt(age.trim()));
+                if (ages.some(isNaN)) return;
+                data = { ages };
+            } else {
+                data = { [steps[currentStep - 1]]: userInput };
+            }
+
+            // Append user message
+            appendMessage('You', userInput, 'user');
+            document.getElementById('user-input').value = '';
+
+            await sendToServer(currentStep, data);
+        });
+
+        document.getElementById('minimize-button').addEventListener('click', () => {
+            const chatBox = document.getElementById('chat-box');
+            if (chatBox.classList.contains('minimized')) {
+                chatBox.classList.remove('minimized');
+                document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
+            } else {
+                chatBox.classList.add('minimized');
+                document.getElementById('minimize-button').innerHTML = '<i class="fas fa-plus"></i>';
+            }
+        });
+
+        function appendMessage(sender, message, type) {
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.textContent = message;
+            messageDiv.appendChild(messageContent);
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        }
+    </script>
+</body>
+</html>

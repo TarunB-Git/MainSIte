@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Image Carousel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #000;
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .carousel-panel {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 2s ease-in-out; /* Smooth fade-in and fade-out */
+      z-index: 0;
+    }
+
+    .carousel-panel.active {
+      opacity: 1;
+      z-index: 1; /* Bring the active panel to the top */
+    }
+
+    .carousel-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures the image covers the entire panel */
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function Carousel() {
+      const [currentIndex, setCurrentIndex] = useState(0);
+
+      // Panels data (4 panels with images)
+      const panels = [
+        { id: 1, image: "static/templates/Images/img.jpeg" },  // Update the image path to your local images
+        { id: 2, image: "static/templates/Images/img2.jpeg" },
+        { id: 3, image: "static/templates/Images/img3.jpeg" },
+      ];
+
+
+      // Cycle through panels every 3 seconds
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % panels.length);
+        }, 3000);
+        return () => clearInterval(interval); // Cleanup on unmount
+      }, [panels.length]);
+
+      return (
+        <div className="carousel-container">
+          {panels.map((panel, index) => (
+            <div
+              key={panel.id}
+              className={`carousel-panel ${index === currentIndex ? "active" : ""}`}
+            >
+              <img
+                src={panel.image}
+                alt={`Panel ${index + 1}`}
+                className="carousel-image"
+              />
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<Carousel />, document.getElementById("root"));
+  </script>
+</body>
+</html>
